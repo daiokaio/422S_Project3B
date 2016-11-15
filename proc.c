@@ -548,12 +548,14 @@ clone(void(*fcn)(void*), void *arg, void*stack){
   newProcess->tf->esp = (int) ustack - 4;
   newProcess->ustack = stack;
 
-  newProcess->tf->esp = (int)stack + 4092; // move esp to the top of the new stack
-  *((int *)(newProcess->tf->esp)) = (int)arg; // push the argument
-  *((int *)(newProcess->tf->esp - 4)) = 0xFFFFFFFF; // push the return address
+  //We are going to move the newProcess to the top of the stack,
+  //And push the arguments in while giving it a phony return address.
+  newProcess->tf->esp = (int)stack + 4092;
+  *((int *)(newProcess->tf->esp)) = (int)arg;
+  *((int *)(newProcess->tf->esp - 4)) = 0xFFFFFFFF;
   newProcess->tf->esp -= 4;
 
-
+  //Assign the function to the eip register.
   newProcess->tf->eip = (int) fcn;
 
   //Setup the user stack
@@ -562,7 +564,7 @@ clone(void(*fcn)(void*), void *arg, void*stack){
   *(ustack - 1) = 0xFFFFFFFF;
   *(ustack - 2) = 0xFFFFFFFF;
 
-  //Same as in fork();
+  //Same as in fork() ************ down here.
   int x;
   for(x = 0; x < NOFILE; x++){
     if(proc->ofile[x]){
