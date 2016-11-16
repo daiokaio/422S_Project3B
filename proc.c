@@ -540,8 +540,6 @@ clone(void(*fcn)(void*), void *arg, void*stack){
   newProcess->ustack  = stack;
   newProcess->pgdir   = proc->pgdir;
 
-
-
   //get the registers, and give it the function to run.
   newProcess->tf->eax = 0;
   newProcess->tf->ebp = (int) ustack - 4;
@@ -559,10 +557,10 @@ clone(void(*fcn)(void*), void *arg, void*stack){
   newProcess->tf->eip = (int) fcn;
 
   //Setup the user stack
-  *ustack = (int)arg;
+  //*ustack = (int)arg;
   //Let's give it a fake PC of 0xffffffff
-  *(ustack - 1) = 0xFFFFFFFF;
-  *(ustack - 2) = 0xFFFFFFFF;
+  //*(ustack - 1) = 0xFFFFFFFF;
+  //ustack - 2) = 0xFFFFFFFF;
 
   //Same as in fork() ************ down here.
   int x;
