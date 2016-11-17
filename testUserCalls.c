@@ -22,7 +22,7 @@ int
 main(int argc, char *argv[])
 {
  int pid;
- void ** stack = malloc(4096);
+ void * stack[10];
 
  printf(1, "Running testUserCalls:\n");
  globalCounter++;
@@ -30,13 +30,16 @@ main(int argc, char *argv[])
 
  int x;
  for(x=0; x<10; x++){
-   pid = clone((void *) &addToCounter, (void *) &globalCounter, (void *) *stack);
-
+   stack[x] = malloc(4096);
+   pid = clone((void *) &addToCounter, (void *) &globalCounter, (void *) stack[x]);
    printf(1, "user pid: %d\n", pid);
-
  }
 
- printf(1, "join pid %d\n", join((void **) stack));
+ for(x=0; x<10; x++){
+   printf(1, "join pid %d\n", join((void **) &stack[x]));
+ }
+
+
  globalCounter++;
  printf(1, "joined\n");
 

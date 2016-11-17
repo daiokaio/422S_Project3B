@@ -507,13 +507,10 @@ procdump(void)
 
 int
 clone(void(*fcn)(void*), void *arg, void*stack){
-
   //Initialize our variables
   int pid;
   struct proc *newProcess;
   int *ustack = stack + PGSIZE - 4;
-
-
 
   //Make room for the process.
   if((newProcess = allocproc()) == 0){
@@ -555,12 +552,6 @@ clone(void(*fcn)(void*), void *arg, void*stack){
 
   //Assign the function to the eip register.
   newProcess->tf->eip = (int) fcn;
-
-  //Setup the user stack
-  //*ustack = (int)arg;
-  //Let's give it a fake PC of 0xffffffff
-  //*(ustack - 1) = 0xFFFFFFFF;
-  //ustack - 2) = 0xFFFFFFFF;
 
   //Same as in fork() ************ down here.
   int x;
