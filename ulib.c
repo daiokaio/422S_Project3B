@@ -152,17 +152,17 @@ int thread_create(void(*fcn)(void*), void *arg){
 
 //Function call that will JOIN the threads
 int thread_join(void){
-  int x,y;
+  int x,p;
   for(x=0; x < NPROC; x++){
     if(threads[x].used == 1){
-      y = join(&threads[x].ustack);
+      p = join(&threads[x].ustack);
 
       //If the ustack from joining is greater than 0, then remove this thread.
-      if(y > 0){
+      if(p > 0){
         int y;
         void * ustack;
         for(y=0; y < NPROC; y++){
-          if(threads[y].used && threads[y].pid == (int)&y){
+          if(threads[y].used && threads[y].pid == (int)&p){
             //If this thread is being used, and it matches its pid, then remove it.
             ustack = threads[y].ustack;
             free(ustack); //Free allocation
@@ -175,7 +175,7 @@ int thread_join(void){
       }
     }
   }
-  return y;
+  return p;
 }
 
 /** ************************** LOCKS ARE HERE *************** */

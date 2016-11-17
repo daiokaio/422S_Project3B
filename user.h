@@ -60,6 +60,6 @@ int thread_create(void(*fcn)(void*),void *arg);
 int thread_join(void);
 
 //Now the locks
-void lock_acquire(struct __lock_t);
-void lock_release(struct __lock_t);
-void lock_init(struct __lock_t);
+void lock_acquire(struct __lock_t *);
+void lock_release(struct __lock_t *);
+void lock_init(struct __lock_t *);
