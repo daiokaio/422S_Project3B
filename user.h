@@ -6,9 +6,15 @@ struct stat;
 struct rtcdate;
 
 //Lets define our lock right here,
-typedef struct _lock_t {
+typedef struct __lock_t {
    volatile uint flag;
 } lock_t;
+
+struct user_thread {
+    int pid;
+    int used;
+    void * ustack;
+};
 
 // system calls
 int fork(void);
@@ -54,6 +60,6 @@ int thread_create(void(*fcn)(void*),void *arg);
 int thread_join(void);
 
 //Now the locks
-void lock_acquire(struct _lock_t);
-void lock_release(struct _lock_t);
-void lock_init(struct _lock_t);
+void lock_acquire(struct __lock_t);
+void lock_release(struct __lock_t);
+void lock_init(struct __lock_t);
